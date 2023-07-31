@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <h3 class="title">管理员登录</h3>
+        <h3 class="title">人事管理系统</h3>
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
@@ -17,27 +17,8 @@
         </span>
         <el-input v-model="loginForm.password" :type="passwordType" name="password" auto-complete="on" tabindex="2" show-password placeholder="管理员密码" @keyup.enter.native="handleLogin" />
       </el-form-item>
-
-      <!-- <el-form-item prop="code">
-        <span class="svg-container">
-          <svg-icon icon-class="lock" />
-        </span>
-        <el-input v-model="loginForm.code" auto-complete="off" name="code" tabindex="2" placeholder="验证码" style="width: 60%" @keyup.enter.native="handleLogin" />
-        <div class="login-code">
-          <img :src="codeImg" @click="getCode">
-        </div>
-      </el-form-item> -->
-
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span> 超级管理员用户名: admin123</span>
-          <span> 超级管理员用户名：admin123</span>
-        </div>
-      </div>
     </el-form>
-
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   "name": "ep",
   "version": "1.0.0",
   "description": "ep basing on vue-element-admin 4.3.0",
-  "author": "linlinjava <linlinjava@163.com>",
+  "author": "mng_boy <mng_boy@126.com>",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
