@@ -14,13 +14,15 @@
       <el-table-column align="center" label="是否有效">
         <template slot-scope="scope">
           <el-switch
-            class="switchStyleTab"
             v-model="scope.row.valid"
+            class="switchStyleTab"
             :active-value="1"
             :inactive-value="0"
             active-color="#13ce66"
-            inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-          </el-switch>
+            inactive-color="#ff4949"
+            active-text="有效"
+            inactive-text="无效"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
@@ -44,13 +46,15 @@
         </el-form-item>
         <el-form-item label="是否有效" prop="valid">
           <el-switch
-            class="switchStyle"
             v-model="dataForm.valid"
+            class="switchStyle"
             active-color="#13ce66"
             :active-value="1"
             :inactive-value="0"
-            inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-          </el-switch>
+            inactive-color="#ff4949"
+            active-text="有效"
+            inactive-text="无效"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -132,7 +136,7 @@
 </style>
 
 <script>
-import { listCompany,createCompany, updateCompany, deleteCompany } from '@/api/company'
+import { listCompany, createCompany, updateCompany, deleteCompany } from '@/api/company'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination

@@ -16,6 +16,7 @@
       <el-table-column align="center" label="创建时间" prop="createTime" />
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button v-permission="['POST /salary/month/detail']" type="primary" size="mini" @click="handleDetail(scope.row)">查看</el-button>
           <el-button v-permission="['POST /salary/month/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /salary/month/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -28,22 +29,33 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="100px" style="margin-right:20px;">
         <el-form-item label="编码" prop="code">
-          <el-input v-model="dataForm.code" />
+          <el-date-picker
+            v-model="dataForm.code"
+            type="month"
+            placeholder="请选择编码"
+            value-format="yyyy-MM"
+            :disabled="dialogStatus === 'detail'"
+          />
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="dataForm.name" />
-        </el-form-item>        
+          <el-date-picker
+            v-model="dataForm.name"
+            type="month"
+            placeholder="请选择名称"
+            value-format="yyyy-MM"
+            :disabled="dialogStatus === 'detail'"
+          />
+        </el-form-item>
         <el-form-item label="备注" prop="notes">
-          <el-input v-model="dataForm.notes" />
-        </el-form-item>        
+          <el-input v-model="dataForm.notes" :disabled="dialogStatus === 'detail'" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button v-if="dialogStatus=='update'" type="primary" @click="updateData">确定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -51,7 +63,7 @@
 </style>
 
 <script>
-import { listSalaryMonth, createSalaryMonth, updateSalaryMonth, deleteSalaryMonth} from '@/api/salary'
+import { listSalaryMonth, createSalaryMonth, updateSalaryMonth, deleteSalaryMonth } from '@/api/salary'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -70,16 +82,13 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      dataForm: {
-        code: undefined,
-        name: undefined,
-        notes: undefined
-      },
+      dataForm: {},
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '编辑薪酬月份',
-        create: '创建薪酬月份'
+        create: '创建薪酬月份',
+        detail: '查看薪酬月份'
       },
       rules: {
         code: [
@@ -121,11 +130,7 @@ export default {
       this.getList()
     },
     resetForm() {
-      this.dataForm = {
-        code: undefined,
-        name: undefined,
-        notes: undefined
-      }
+      this.dataForm = {}
     },
     handleCreate() {
       this.resetForm()
@@ -154,6 +159,14 @@ export default {
               })
             })
         }
+      })
+    },
+    handleDetail(row) {
+      this.dataForm = Object.assign({}, row)
+      this.dialogStatus = 'detail'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     },
     handleUpdate(row) {

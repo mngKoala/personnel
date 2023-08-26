@@ -112,7 +112,7 @@ export const asyncRoutes = [
           title: '组织管理',
           noCache: true
         }
-      },    
+      },
       {
         path: 'dept',
         component: () => import('@/views/basic/dept'),
@@ -122,7 +122,7 @@ export const asyncRoutes = [
           title: '部门管理',
           noCache: true
         }
-      },   
+      },
       {
         path: 'position',
         component: () => import('@/views/basic/position'),
@@ -132,7 +132,7 @@ export const asyncRoutes = [
           title: '岗位管理',
           noCache: true
         }
-      },       
+      },
       {
         path: 'employee',
         component: () => import('@/views/basic/employee'),
@@ -142,7 +142,7 @@ export const asyncRoutes = [
           title: '员工管理',
           noCache: true
         }
-      },   
+      },
       {
         path: 'positionType',
         component: () => import('@/views/basic/positionType'),
@@ -258,7 +258,7 @@ export const asyncRoutes = [
           title: '合同签订方',
           noCache: true
         }
-      }      
+      }
     ]
   },
   {
@@ -272,26 +272,6 @@ export const asyncRoutes = [
       icon: 'chart'
     },
     children: [
-      {
-        path: 'my',
-        component: () => import('@/views/salary/my'),
-        name: 'my',
-        meta: {
-          perms: ['GET /admin/admin/list', 'POST /admin/admin/create', 'POST /admin/admin/update', 'POST /admin/admin/delete'],
-          title: '我的薪酬',
-          noCache: true
-        }
-      },
-      {
-        path: 'detail',
-        component: () => import('@/views/salary/detail'),
-        name: 'detail',
-        meta: {
-          perms: ['GET /admin/admin/list', 'POST /admin/admin/create', 'POST /admin/admin/update', 'POST /admin/admin/delete'],
-          title: '我的明细',
-          noCache: true
-        }
-      },
       {
         path: 'payroll',
         component: () => import('@/views/salary/payroll'),

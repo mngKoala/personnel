@@ -11,20 +11,20 @@
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="工号" prop="id"  />
-      <el-table-column align="center" label="姓名" prop="id"  />
-      <el-table-column align="center" label="性别" prop="id"  />
-      <el-table-column align="center" label="手机" prop="id"  />
-      <el-table-column align="center" label="部门" prop="id"  />
-      <el-table-column align="center" label="主岗" prop="id"  />
-      <el-table-column align="center" label="状态" prop="id"  />
-      <el-table-column align="center" label="类型" prop="id"  />
-      <el-table-column align="center" label="直属领导" prop="id"  />
-      <el-table-column align="center" label="身份证" prop="id"  />
-      <el-table-column align="center" label="兼岗" prop="id"  />
-      <el-table-column align="center" label="签约方" prop="id"  />
-      <el-table-column align="center" label="成本中心" prop="id"  />
-      <el-table-column align="center" label="客户信息" prop="id"  />
+      <el-table-column align="center" label="工号" prop="id" />
+      <el-table-column align="center" label="姓名" prop="id" />
+      <el-table-column align="center" label="性别" prop="id" />
+      <el-table-column align="center" label="手机" prop="id" />
+      <el-table-column align="center" label="部门" prop="id" />
+      <el-table-column align="center" label="主岗" prop="id" />
+      <el-table-column align="center" label="状态" prop="id" />
+      <el-table-column align="center" label="类型" prop="id" />
+      <el-table-column align="center" label="直属领导" prop="id" />
+      <el-table-column align="center" label="身份证" prop="id" />
+      <el-table-column align="center" label="兼岗" prop="id" />
+      <el-table-column align="center" label="签约方" prop="id" />
+      <el-table-column align="center" label="成本中心" prop="id" />
+      <el-table-column align="center" label="客户信息" prop="id" />
 
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">

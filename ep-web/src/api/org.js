@@ -11,14 +11,15 @@ export function getName(id) {
   return request({
     url: '/basic/org/name',
     method: 'get',
-    params: {id}
+    params: { id }
   })
 }
 
-export function getCompany() {
+export function getCompany(query) {
   return request({
     url: '/basic/org/com',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

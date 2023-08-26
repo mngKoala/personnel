@@ -1,6 +1,14 @@
 import request from '@/utils/request'
 
-export function listAdmin(query) {
+export function listEmployee(query) {
+  return request({
+    url: '/person/register/listEmployee',
+    method: 'get',
+    params: query
+  })
+}
+
+export function listPerson(query) {
   return request({
     url: '/person/register/list',
     method: 'get',
@@ -8,7 +16,7 @@ export function listAdmin(query) {
   })
 }
 
-export function createAdmin(data) {
+export function createPerson(data) {
   return request({
     url: '/person/register/create',
     method: 'post',
@@ -16,15 +24,15 @@ export function createAdmin(data) {
   })
 }
 
-export function readminAdmin(data) {
+export function readPerson(id) {
   return request({
-    url: '/person/register/readmin',
+    url: '/person/register/read',
     method: 'get',
-    data
+    params: { id }
   })
 }
 
-export function updateAdmin(data) {
+export function updatePerson(data) {
   return request({
     url: '/person/register/update',
     method: 'post',
@@ -32,7 +40,7 @@ export function updateAdmin(data) {
   })
 }
 
-export function deleteAdmin(data) {
+export function deletePerson(data) {
   return request({
     url: '/person/register/delete',
     method: 'post',

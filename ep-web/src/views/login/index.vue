@@ -63,18 +63,10 @@ export default {
 
   },
   created() {
-    this.getCode()
-    // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
-    getCode() {
-      getKaptcha().then(response => {
-        this.codeImg = response.data.data
-      })
-    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid && !this.loading) {
@@ -102,9 +94,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
 $bg:#283443;
 $light_gray:#fff;
 $cursor: #fff;

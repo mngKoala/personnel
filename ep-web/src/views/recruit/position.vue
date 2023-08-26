@@ -3,7 +3,7 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入招聘岗位名称" />
+      <el-input v-model="listQuery.postName" clearable class="filter-item" style="width: 200px;" placeholder="请输入招聘岗位名称" />
       <el-button v-permission="['GET /post/rec/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /post/rec/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
@@ -28,17 +28,17 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="100px" style="margin-right:20px;">
-        <el-form-item label="招聘说明" prop="username">
-          <el-input v-model="dataForm.username" />
+        <el-form-item label="招聘说明" prop="name">
+          <el-input v-model="dataForm.name" />
         </el-form-item>
-        <el-form-item label="岗位名称" prop="username">
-          <el-input v-model="dataForm.username" />
+        <el-form-item label="岗位名称" prop="postName">
+          <el-input v-model="dataForm.postName" />
         </el-form-item>
-        <el-form-item label="招聘要求" prop="username">
-          <el-input v-model="dataForm.username" type="textarea" :rows="8"/>
+        <el-form-item label="招聘要求" prop="content">
+          <el-input v-model="dataForm.content" type="textarea" :rows="8" />
         </el-form-item>
-        <el-form-item label="备注" prop="username">
-          <el-input v-model="dataForm.username" type="textarea" :rows="8"/>
+        <el-form-item label="备注" prop="notes">
+          <el-input v-model="dataForm.notes" type="textarea" :rows="8" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -73,17 +73,11 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        username: undefined,
+        postName: undefined,
         sort: 'add_time',
         order: 'desc'
       },
-      dataForm: {
-        id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
-      },
+      dataForm: {},
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -91,8 +85,11 @@ export default {
         create: '添加招聘岗位'
       },
       rules: {
-        username: [
-          { required: true, message: '招聘岗位名称不能为空', trigger: 'blur' }
+        name: [
+          { required: true, message: '招聘说明不能为空', trigger: 'blur' }
+        ],
+        postName: [
+          { required: true, message: '岗位名称不能为空', trigger: 'blur' }
         ]
       }
     }

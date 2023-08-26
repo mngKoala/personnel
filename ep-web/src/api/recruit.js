@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
-
-//////////////////////////////////////招聘岗位/////////////////////////////////////////////////
+// ////////////////////////////////////招聘岗位/////////////////////////////////////////////////
 export function listRecruitPostRec(query) {
   return request({
     url: '/post/rec/list',
@@ -42,8 +41,7 @@ export function deleteRecruitPostRec(data) {
   })
 }
 
-
-//////////////////////////////////////招聘记录/////////////////////////////////////////////////
+// ////////////////////////////////////招聘记录/////////////////////////////////////////////////
 export function listRecruitPersonRec(query) {
   return request({
     url: '/person/rec/list',
@@ -78,7 +76,7 @@ export function updateRecruitPersonRec(data) {
 
 export function deleteRecruitPersonRec(data) {
   return request({
-    url: '/post/rec/delete',
+    url: '/person/rec/delete',
     method: 'post',
     data
   })

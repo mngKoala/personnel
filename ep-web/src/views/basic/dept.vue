@@ -2,29 +2,29 @@
   <div class="app-container">
 
     <el-row>
-        <el-col span="6">
-            <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick">
-               <!--
+      <el-col span="6">
+        <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick">
+          <!--
                 <template #default="{ node, data }">
                   <span><img :src="require('@/assets/gongsi.png')" /></span>
                   <span>{{ node.label }}</span>
               </template>-->
-            </el-tree>
-        </el-col>
-        <el-col span="18">
-            <!-- 查询和其他操作 -->
-            <div class="filter-container">
-              <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入管理员名称" />
-              <el-button v-permission="['GET /admin/admin/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-              <el-button v-permission="['POST /admin/admin/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-              <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
-            </div>
+        </el-tree>
+      </el-col>
+      <el-col span="18">
+        <!-- 查询和其他操作 -->
+        <div class="filter-container">
+          <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入管理员名称" />
+          <el-button v-permission="['GET /admin/admin/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+          <el-button v-permission="['POST /admin/admin/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+          <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+        </div>
 
-            <!-- 查询结果 -->
-            <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-              <el-table-column align="center" label="全称" prop="fullName" sortable />
-              <el-table-column align="center" label="简称" prop="shortName" />
-              <!--
+        <!-- 查询结果 -->
+        <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+          <el-table-column align="center" label="全称" prop="fullName" sortable />
+          <el-table-column align="center" label="简称" prop="shortName" />
+          <!--
               <el-table-column align="center" label="所属组织" prop="hrmOrganization">
                   <template slot-scope="scope">
                       <span v-if="scope.row.hrmOrganization.shortName !=''">{{scope.row.hrmOrganization.shortName}}</span>
@@ -32,38 +32,40 @@
                   </template>
               </el-table-column>
               -->
-              <el-table-column align="center" label="岗位代码" prop="code" />
-              <el-table-column align="center" label="岗位类型" prop="type" />
-              <el-table-column align="center" label="是否有效" prop="valid">
-                  <template slot-scope="scope">
-                    <el-switch
-                      class="switchStyleTab"
-                      v-model="scope.row.valid"
-                      :active-value="1"
-                      :inactive-value="0"
-                      active-color="#13ce66"
-                      inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-                    </el-switch>
-                  </template>              
-              </el-table-column>
-              <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
-                <template slot-scope="scope">
-                  <el-button v-permission="['POST /admin/admin/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-                  <el-button v-permission="['POST /admin/admin/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+          <el-table-column align="center" label="岗位代码" prop="code" />
+          <el-table-column align="center" label="岗位类型" prop="type" />
+          <el-table-column align="center" label="是否有效" prop="valid">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.valid"
+                class="switchStyleTab"
+                :active-value="1"
+                :inactive-value="0"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="有效"
+                inactive-text="无效"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <el-button v-permission="['POST /admin/admin/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+              <el-button v-permission="['POST /admin/admin/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-        </el-col>
+      </el-col>
     </el-row>
 
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="100px" style="width: 600px; margin-left:50px;">
         <el-form-item label="所属组织">
-          {{this.orgName}}
+          {{ this.orgName }}
         </el-form-item>
         <el-form-item label="全称" prop="fullName">
           <el-input v-model="dataForm.fullName" />
@@ -73,16 +75,18 @@
         </el-form-item>
         <el-form-item label="代码" prop="code">
           <el-input v-model="dataForm.code" />
-        </el-form-item>  
+        </el-form-item>
         <el-form-item label="是否有效" prop="valid">
           <el-switch
-            class="switchStyle"
             v-model="dataForm.valid"
+            class="switchStyle"
             active-color="#13ce66"
             :active-value="1"
             :inactive-value="0"
-            inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-          </el-switch>
+            inactive-color="#ff4949"
+            active-text="有效"
+            inactive-text="无效"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -171,7 +175,7 @@
 <script>
 import { tree, getName, getCompany, getDept, createOrg, updateOrg, deleteOrg } from '@/api/org'
 import { createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
-import { listPosition, createPosition, readminPosition, updatePosition, deletePosition} from '@/api/basic'
+import { listPosition, createPosition, readminPosition, updatePosition, deletePosition } from '@/api/basic'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -184,12 +188,12 @@ export default {
       data: null,
       defaultProps: {
         children: 'children',
-        label: function(data,node){
-            if(data.shortName != "" && data.shortName != null ){
-              return data.shortName
-            }else{
-              return data.fullName
-            }
+        label: function(data, node) {
+          if (data.shortName != '' && data.shortName != null) {
+            return data.shortName
+          } else {
+            return data.fullName
+          }
         }
       },
       list: null,
@@ -243,34 +247,34 @@ export default {
   },
   methods: {
     handleNodeClick(data) {
-      //console.log(data)
+      // console.log(data)
       this.orgId = data.id
-      this.listQuery.parentId =  data.id
+      this.listQuery.parentId = data.id
       this.hierarchy = data.hierarchy
       this.getList()
-      //this.getName(data.id)
+      // this.getName(data.id)
     },
-    getName(id){
-      this.orgName = ""
+    getName(id) {
+      this.orgName = ''
       getName(id)
         .then(response => {
           this.findName(response.data.data[0])
         })
         .catch(() => {
-        })  
+        })
     },
-    findName(obj){
-      if(this.orgName ===""){
-        this.orgName = obj.fullName;
-      }else{
-        this.orgName =  obj.fullName +  "/" + this.orgName ;
+    findName(obj) {
+      if (this.orgName === '') {
+        this.orgName = obj.fullName
+      } else {
+        this.orgName = obj.fullName + '/' + this.orgName
       }
 
-      if(obj.hrmOrganization != null){
+      if (obj.hrmOrganization != null) {
         this.findName(obj.hrmOrganization)
       }
     },
-    getTree(){
+    getTree() {
       this.listLoading = true
       getCompany()
         .then(response => {
@@ -294,7 +298,7 @@ export default {
           this.list = []
           this.total = 0
           this.listLoading = false
-        })        
+        })
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -307,17 +311,17 @@ export default {
         shortName: undefined,
         hierarchy: undefined,
         type: 'dept',
-        valid: 1     
+        valid: 1
       }
     },
     handleCreate() {
-      if(this.orgId === undefined){
-          this.$notify.error({
-            title: '提示',
-            message: '请选择公司'
-          })
+      if (this.orgId === undefined) {
+        this.$notify.error({
+          title: '提示',
+          message: '请选择公司'
+        })
 
-          return false
+        return false
       }
 
       this.resetForm()
@@ -330,7 +334,7 @@ export default {
     createData() {
       this.dataForm.parentId = this.orgId
       this.dataForm.hierarchy = this.hierarchy
-      
+
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           createOrg(this.dataForm)

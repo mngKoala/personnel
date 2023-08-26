@@ -30,34 +30,33 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="100px" style="margin-right:20px;">
-        <el-form-item label="招聘说明" prop="username">
-          <el-input v-model="dataForm.username" />
+        <el-form-item label="招聘说明" prop="name">
+          <el-input v-model="dataForm.name" />
         </el-form-item>
-        <el-form-item label="岗位名称" prop="username">
-          <el-input v-model="dataForm.username" />
+        <el-form-item label="岗位名称" prop="postName">
+          <el-input v-model="dataForm.postName" />
         </el-form-item>
-        <el-form-item label="岗位名称" prop="username">
-          <el-input v-model="dataForm.username" />
-        </el-form-item>
-        <el-form-item label="开始时间" prop="username">
+        <el-form-item label="开始时间" prop="startDate">
           <el-date-picker
-                v-model="value1"
-                type="date"
-                placeholder="选择开始时间">
-            </el-date-picker>                  
+            v-model="dataForm.startDate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择开始时间"
+          />
         </el-form-item>
-        <el-form-item label="结束时间" prop="username">
+        <el-form-item label="结束时间" prop="endDate">
           <el-date-picker
-                v-model="value1"
-                type="date"
-                placeholder="选择技术时间">
-            </el-date-picker>                  
+            v-model="dataForm.endDate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择技术时间"
+          />
         </el-form-item>
-        <el-form-item label="招聘要求" prop="username">
-          <el-input v-model="dataForm.username"  type="textarea" :rows="5"/>
+        <el-form-item label="招聘要求" prop="content">
+          <el-input v-model="dataForm.content" type="textarea" :rows="5" />
         </el-form-item>
-        <el-form-item label="备注" prop="username">
-          <el-input v-model="dataForm.username"  type="textarea" :rows="5"/>
+        <el-form-item label="备注" prop="notes">
+          <el-input v-model="dataForm.notes" type="textarea" :rows="5" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,7 +76,7 @@
 </style>
 
 <script>
-import { listRecruitPersonRec, createRecruitPersonRec, updateRecruitPersonRec, deleteRecruitPersonRec} from '@/api/recruit'
+import { listRecruitPersonRec, createRecruitPersonRec, updateRecruitPersonRec, deleteRecruitPersonRec } from '@/api/recruit'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -96,13 +95,7 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      dataForm: {
-        id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
-      },
+      dataForm: {},
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -110,10 +103,10 @@ export default {
         create: '添加招聘记录'
       },
       rules: {
-        username: [
-          { required: true, message: '招聘记录名称不能为空', trigger: 'blur' }
+        name: [
+          { required: true, message: '招聘说明不能为空', trigger: 'blur' }
         ],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+        postName: [{ required: true, message: '招聘名称不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -147,13 +140,7 @@ export default {
       this.getList()
     },
     resetForm() {
-      this.dataForm = {
-        id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
-      }
+      this.dataForm = {}
     },
     handleCreate() {
       this.resetForm()

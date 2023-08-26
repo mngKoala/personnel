@@ -14,11 +14,12 @@
       <el-table-column align="center" label="档案状态" prop="status">
         <template slot-scope="scope">
           <span v-if="scope.row.status === 'out'">调出</span>
-        </template>      
+          <span v-if="scope.row.status === 'in'">调入</span>
+        </template>
       </el-table-column>
       <el-table-column align="center" label="人员" prop="hrPerson">
         <template slot-scope="scope">
-          {{scope.row.hrPerson.name}}
+          <span v-if="scope.row.hrPerson != null">{{ scope.row.hrPerson.name }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="是否新建档" prop="ifNew">
@@ -26,15 +27,16 @@
           <span v-if="scope.row.ifNew === 'yes'">是</span>
           <span v-if="scope.row.ifNew === 'no'">否</span>
         </template>
-      </el-table-column>      
+      </el-table-column>
       <el-table-column align="center" label="来源" prop="source" />
       <el-table-column align="center" label="档案保管地" prop="saveLoc" />
       <el-table-column align="center" label="参加工作时间" prop="workStartDate" />
       <el-table-column align="center" label="附件" prop="file" />
-      <el-table-column align="center" label="备注" prop="notes" />
+      <el-table-column align="center" label="备注" prop="note" />
       <el-table-column align="center" label="创建时间" prop="createTime" />
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="300">
         <template slot-scope="scope">
+          <el-button v-permission="['POST /person/file/detail']" type="primary" size="mini" @click="handleDetail(scope.row)">查看</el-button>
           <el-button v-permission="['POST /person/file/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /person/file/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -48,58 +50,72 @@
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="150px" style="margin-right:20px;">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="人员" prop="username">
-              <el-input v-model="dataForm.username" />
+            <el-form-item label="人员" prop="userId">
+              <el-select v-model="dataForm.userId" :disabled="dialogStatus === 'detail'" placeholder="请选择">
+                <el-option
+                  v-for="item in listPerson"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+                <el-col :span="12" style="margin-top:0px;margin-bottom:30px;">
+                  <div class="bottomPage">
+                    <pagination v-show="totalPerson>0" :total="totalPerson" :page.sync="listQueryPerson.page" :limit.sync="listQueryPerson.limit" layout="prev, pager, next" prev-text="上一页" next-text="下一页" @pagination="getListPerson" />
+                  </div>
+                </el-col>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="参加工作时间" prop="username">
+            <el-form-item label="参加工作时间" prop="workStartDate">
               <el-date-picker
-                    v-model="value1"
-                    type="date"
-                    placeholder="选择参加工作时间">
-                </el-date-picker>                  
+                v-model="dataForm.workStartDate"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择参加工作时间"
+                :disabled="dialogStatus === 'detail'"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="档案保管地" prop="username">
-              <el-input v-model="dataForm.username" />
+            <el-form-item label="档案保管地" prop="saveLoc">
+              <el-input v-model="dataForm.saveLoc" :disabled="dialogStatus === 'detail'" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="档案编号" prop="username">
-              <el-input v-model="dataForm.username" />
+            <el-form-item label="档案编号" prop="code">
+              <el-input v-model="dataForm.code" :disabled="dialogStatus === 'detail'" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="是否新建档" prop="username">
-              <el-radio-group v-model="radio">
-                <el-radio label="1">是</el-radio>
-                <el-radio label="0">否</el-radio>
+            <el-form-item label="是否新建档" prop="ifNew">
+              <el-radio-group v-model="dataForm.ifNew">
+                <el-radio label="yes" :disabled="dialogStatus === 'detail'">是</el-radio>
+                <el-radio label="no" :disabled="dialogStatus === 'detail'">否</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="来源" prop="username">
-              <el-input v-model="dataForm.username" />
+            <el-form-item label="来源" prop="source">
+              <el-input v-model="dataForm.source" :disabled="dialogStatus === 'detail'" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="备注" prop="username">
-              <el-input v-model="dataForm.username" />
+            <el-form-item label="备注" prop="note">
+              <el-input v-model="dataForm.note" :disabled="dialogStatus === 'detail'" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="附件" prop="username">
-              <el-button>请选择附件</el-button>
+            <el-form-item label="附件" prop="file">
+              <el-button :disabled="dialogStatus === 'detail'">请选择附件</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -107,7 +123,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button v-if="dialogStatus=='update'" type="primary" @click="updateData">确定</el-button>
       </div>
     </el-dialog>
 
@@ -121,7 +137,8 @@
 </style>
 
 <script>
-import { listPersonFile, createPersonFile, updatePersonFile, deletePersonFile} from '@/api/file'
+import { listPersonFile, createPersonFile, updatePersonFile, deletePersonFile } from '@/api/file'
+import { listPerson } from '@/api/register'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -133,6 +150,12 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      listPerson: null,
+      totalPerson: 0,
+      listQueryPerson: {
+        page: 1,
+        limit: 5
+      },
       listQuery: {
         page: 1,
         limit: 20,
@@ -141,23 +164,21 @@ export default {
         order: 'desc'
       },
       dataForm: {
-        id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
+        ifNew: 'yes',
+        status: 'in'
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '编辑人员档案',
-        create: '添加人员档案'
+        create: '添加人员档案',
+        detail: '查看人员档案'
       },
       rules: {
-        username: [
-          { required: true, message: '人员档案名称不能为空', trigger: 'blur' }
+        userId: [
+          { required: true, message: '人员不能为空', trigger: 'blur' }
         ],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+        ifNew: [{ required: true, message: '请选择是否新建档案', trigger: 'blur' }]
       }
     }
   },
@@ -170,8 +191,20 @@ export default {
   },
   created() {
     this.getList()
+    this.getListPerson()
   },
   methods: {
+    getListPerson() {
+      listPerson(this.listQueryPerson)
+        .then(response => {
+          this.listPerson = response.data.data.list
+          this.totalPerson = response.data.data.total
+        })
+        .catch(() => {
+          this.listPerson = []
+          this.totalPerson = 0
+        })
+    },
     getList() {
       this.listLoading = true
       listPersonFile(this.listQuery)
@@ -192,11 +225,8 @@ export default {
     },
     resetForm() {
       this.dataForm = {
-        id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
+        ifNew: 'yes',
+        status: 'in'
       }
     },
     handleCreate() {
@@ -226,6 +256,17 @@ export default {
               })
             })
         }
+      })
+      this.list = []
+      this.total = 0
+      this.getList()
+    },
+    handleDetail(row) {
+      this.dataForm = Object.assign({}, row)
+      this.dialogStatus = 'detail'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     },
     handleUpdate(row) {
@@ -262,6 +303,9 @@ export default {
             })
         }
       })
+      this.list = []
+      this.total = 0
+      this.getList()
     },
     handleDelete(row) {
       deletePersonFile(row)

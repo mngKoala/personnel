@@ -1,169 +1,299 @@
 <template>
-  <div class="dashboard-editor-container">
-
-    <el-row :gutter="40" class="panel-group">
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-          <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+  <div class="app-container">
+    <el-row>
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            人员统计
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
           </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">XXXXX</div>
-            <count-to :start-val="0" :end-val="userTotal" :duration="2600" class="card-panel-num"/>
+          <div class="text item">
+            {{ this.dataForm.total }}
           </div>
-        </div>
+          <div class="text item">
+            当前人员统计总人数
+          </div>
+        </el-card>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('messages')">
-          <div class="card-panel-icon-wrapper icon-message">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            在职人数
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
           </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">XXXXX</div>
-            <count-to :start-val="0" :end-val="goodsTotal" :duration="3000" class="card-panel-num"/>
+          <div class="text item">
+            {{ this.dataForm.online }}
           </div>
-        </div>
+          <div class="text item">
+            当前在职人总数
+          </div>
+        </el-card>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('purchases')">
-          <div class="card-panel-icon-wrapper icon-money">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            实习试用人数
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
           </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">XXXXX</div>
-            <count-to :start-val="0" :end-val="productTotal" :duration="3200" class="card-panel-num"/>
+          <div class="text item">
+            {{ this.dataForm.ontrial }}
           </div>
-        </div>
+          <div class="text item">
+            当前实习试用人数
+          </div>
+        </el-card>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-          <div class="card-panel-icon-wrapper icon-shoppingCard">
-            <svg-icon icon-class="money" class-name="card-panel-icon" />
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            非员工人数
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
           </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">XXXXX</div>
-            <count-to :start-val="0" :end-val="orderTotal" :duration="3600" class="card-panel-num"/>
+          <div class="text item">
+            {{ this.dataForm.non_employee }}
           </div>
-        </div>
+          <div class="text item">
+            当前非员工人总数
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            离职人数
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
+          </div>
+          <div class="text item">
+            {{ this.dataForm.offline }}
+          </div>
+          <div class="text item">
+            当前离职人总数
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="4">
+        <el-card class="box-card">
+          <div class="text item">
+            未设置员工人数
+            <span style="float:right;background-color:#1e9fff;border-radius:0.25em;padding:0.2em 0.6em 0.3em;">实时</span>
+          </div>
+          <div class="text item">
+            {{ this.dataForm.other }}
+          </div>
+          <div class="text item">
+            未设置员工人数
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row style="margin-top:30px;">
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>人员状态分布图</span>
+          </div>
+          <div class="chart-container">
+            <div id="chartStatus" class="chart" style="height:300px;width:100%" />
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>人员学历分布</span>
+          </div>
+          <div class="chart-container">
+            <div id="chartEducation" class="chart" style="height:300px;width:100%" />
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 
+<style>
+/**隐藏底部原始滚动条**/
+.el-scrollbar__wrap {
+  overflow-x: hidden !important;
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.item {
+  padding: 8px 0;
+}
+.box-card{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+</style>
+
 <script>
-import { info } from '@/api/dashboard'
-import CountTo from 'vue-count-to'
+import echarts from 'echarts'
+import { listStat, listStatus, listEducation } from '@/api/person'
+import { getToken } from '@/utils/auth'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-  components: {
-    CountTo
-  },
+  name: 'PersonStat',
+  components: { Pagination },
   data() {
     return {
-      userTotal: 0,
-      goodsTotal: 0,
-      productTotal: 0,
-      orderTotal: 0
+      chartStatus: null,
+      chartEducation: null,
+      title: '',
+      list: null,
+      listStatus: null,
+      listEducation: null,
+      listLoading: true,
+      dataForm: {
+        non_employee: 0,
+        offline: 0,
+        online: 0,
+        ontrial: 0,
+        total: 0,
+        other: 0
+      }
+    }
+  },
+  computed: {
+    headers() {
+      return {
+        'X-Ep-Token': getToken()
+      }
     }
   },
   created() {
-    info().then(response => {
-      this.userTotal = response.data.data.userTotal
-      this.goodsTotal = response.data.data.goodsTotal
-      this.productTotal = response.data.data.productTotal
-      this.orderTotal = response.data.data.orderTotal
-    })
+    this.getList()
+    this.getListStatus()
+    this.getListEducation()
+  },
+  mounted() {
+    setTimeout(() => {
+      this.showChartStatus()
+      this.showChartEducation()
+    }, 1000)
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    // 设置图标参数
+    showChartStatus() {
+      // 基于准备好的dom，初始化echarts实例
+      this.chartStatus = echarts.init(document.getElementById('chartStatus'))
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          // text: 'Referer of a Website',
+          // subtext: 'Fake Data',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: this.listStatus,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      this.chartStatus.setOption(option, true)
+    },
+    // 设置图标参数
+    showChartEducation() {
+      // 基于准备好的dom，初始化echarts实例
+      this.chartEducation = echarts.init(document.getElementById('chartEducation'))
+      // console.log(this.chart)
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          // text: 'Referer of a Website',
+          // subtext: 'Fake Data',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: this.listEducation,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      this.chartEducation.setOption(option)
+    },
+    getList() {
+      listStat()
+        .then(response => {
+          this.list = response.data.data.list
+
+          for (let index = 0; index < this.list.length; index++) {
+            const element = this.list[index]
+
+            if (element.name === 'non_employee') {
+              this.dataForm.non_employee = element.value
+            }
+
+            if (element.name === 'offline') {
+              this.dataForm.offline = element.value
+            }
+
+            if (element.name === 'online') {
+              this.dataForm.online = element.value
+            }
+
+            if (element.name === 'ontrial') {
+              this.dataForm.ontrial = element.value
+            }
+
+            if (element.name === 'total') {
+              this.dataForm.total = element.value
+            }
+
+            if (element.name === 'other') {
+              this.dataForm.other = element.value
+            }
+          }
+        })
+        .catch(() => {
+          this.list = []
+        })
+    },
+    getListStatus() {
+      listStatus()
+        .then(response => {
+          this.listStatus = response.data.data.list
+        })
+        .catch(() => {
+          this.listStatus = []
+        })
+    },
+    getListEducation() {
+      listEducation()
+        .then(response => {
+          this.listEducation = response.data.data.list
+        })
+        .catch(() => {
+          this.listEducation = []
+        })
     }
   }
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
-  .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
-  }
-}
-
-.panel-group {
-  margin-top: 18px;
-
-  .card-panel-col{
-    margin-bottom: 32px;
-  }
-  .card-panel {
-    height: 108px;
-    cursor: pointer;
-    font-size: 12px;
-    position: relative;
-    overflow: hidden;
-    color: #666;
-    background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
-    &:hover {
-      .card-panel-icon-wrapper {
-        color: #fff;
-      }
-      .icon-people {
-         background: #40c9c6;
-      }
-      .icon-message {
-        background: #36a3f7;
-      }
-      .icon-money {
-        background: #f4516c;
-      }
-      .icon-shoppingCard {
-        background: #34bfa3
-      }
-    }
-    .icon-people {
-      color: #40c9c6;
-    }
-    .icon-message {
-      color: #36a3f7;
-    }
-    .icon-money {
-      color: #f4516c;
-    }
-    .icon-shoppingCard {
-      color: #34bfa3
-    }
-    .card-panel-icon-wrapper {
-      float: left;
-      margin: 14px 0 0 14px;
-      padding: 16px;
-      transition: all 0.38s ease-out;
-      border-radius: 6px;
-    }
-    .card-panel-icon {
-      float: left;
-      font-size: 48px;
-    }
-    .card-panel-description {
-      float: right;
-      font-weight: bold;
-      margin: 26px;
-      margin-left: 0px;
-      .card-panel-text {
-        line-height: 18px;
-        color: rgba(0, 0, 0, 0.45);
-        font-size: 16px;
-        margin-bottom: 12px;
-      }
-      .card-panel-num {
-        font-size: 20px;
-      }
-    }
-  }
-}
-</style>

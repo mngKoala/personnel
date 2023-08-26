@@ -3,8 +3,8 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入租户名称" />
-      <el-button v-permission="['GET /basic/company/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /basic/company/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button v-permission="['GET /basic/tenant/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['POST /basic/tenant/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -13,20 +13,22 @@
       <el-table-column align="center" label="是否有效">
         <template slot-scope="scope">
           <el-switch
-            class="switchStyleTab"
             v-model="scope.row.valid"
+            class="switchStyleTab"
             :active-value="1"
             :inactive-value="0"
             active-color="#13ce66"
-            inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-          </el-switch>
+            inactive-color="#ff4949"
+            active-text="有效"
+            inactive-text="无效"
+          />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="租户" prop="" />      
+      <el-table-column align="center" label="租户" prop="" />
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /basic/company/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /basic/company/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /basic/tenant/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-permission="['POST /basic/tenant/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,23 +43,25 @@
         </el-form-item>
         <el-form-item label="是否有效" prop="valid">
           <el-switch
-            class="switchStyle"
             v-model="dataForm.valid"
+            class="switchStyle"
             active-color="#13ce66"
             :active-value="1"
             :inactive-value="0"
-            inactive-color="#ff4949"  active-text="有效" inactive-text="无效">
-          </el-switch>
+            inactive-color="#ff4949"
+            active-text="有效"
+            inactive-text="无效"
+          />
         </el-form-item>
         <el-form-item label="租户" prop="companyId">
           <el-select v-model="dataForm.companyId" placeholder="请选择租户">
-            <el-option 
-                v-for="(item, index) in companyOption" 
-                :key="index" 
-                :label="item.name" 
-                :value="item.id">
-            </el-option>
-          </el-select>          
+            <el-option
+              v-for="(item, index) in companyOption"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,7 +143,7 @@
 </style>
 
 <script>
-import { listCompany, listTenant,createTenant, updateTenant, deleteTenant } from '@/api/company'
+import { listCompany, listTenant, createTenant, updateTenant, deleteTenant } from '@/api/company'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -168,7 +172,7 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      companyOption:[],
+      companyOption: [],
       dataForm: {
         alias: undefined,
         valid: 1,
@@ -180,7 +184,7 @@ export default {
         update: '编辑租户',
         create: '添加租户'
       },
-      /**,
+      /** ,
       rules: {
         name: [
           { required: true, message: '租户名称不能为空', trigger: 'blur' }
@@ -212,7 +216,7 @@ export default {
       }
       return ''
     },
-    getListCompany(){
+    getListCompany() {
       listCompany(this.listQueryCompany)
         .then(response => {
           this.companyOption = response.data.data.list

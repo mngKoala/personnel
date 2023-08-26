@@ -3,7 +3,7 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入薪酬模板名称" />
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入薪酬模板名称" />
       <el-button v-permission="['GET /salary/template/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /salary/template/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
@@ -17,6 +17,7 @@
 
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button v-permission="['POST /salary/template/detail']" type="primary" size="mini" @click="handleDetail(scope.row)">查看</el-button>
           <el-button v-permission="['POST /salary/template/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /salary/template/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -29,19 +30,19 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="right" label-width="100px" style="margin-left:20px;margin-right:20px;">
         <el-form-item label="编号" prop="code">
-          <el-input v-model="dataForm.code" />
+          <el-input v-model="dataForm.code" :disabled="dialogStatus === 'detail'" />
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="dataForm.name" />
+          <el-input v-model="dataForm.name" :disabled="dialogStatus === 'detail'" />
         </el-form-item>
         <el-form-item label="备注" prop="notes">
-          <el-input v-model="dataForm.notes" />
+          <el-input v-model="dataForm.notes" :disabled="dialogStatus === 'detail'" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button v-if="dialogStatus=='update'" type="primary" @click="updateData">确定</el-button>
       </div>
     </el-dialog>
 
@@ -67,20 +68,17 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        username: undefined,
+        name: undefined,
         sort: 'add_time',
         order: 'desc'
       },
-      dataForm: {
-        code: undefined,
-        name: undefined,
-        notes: undefined
-      },
+      dataForm: {},
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '编辑薪酬模板',
-        create: '创建薪酬模板'
+        create: '创建薪酬模板',
+        detail: '查看薪酬模板'
       },
       rules: {
         code: [
@@ -88,7 +86,7 @@ export default {
         ],
         name: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
-        ]        
+        ]
       }
     }
   },
@@ -122,11 +120,7 @@ export default {
       this.getList()
     },
     resetForm() {
-      this.dataForm = {
-        code: undefined,
-        name: undefined,
-        notes: undefined
-      }
+      this.dataForm = {}
     },
     handleCreate() {
       this.resetForm()
@@ -158,6 +152,14 @@ export default {
       })
 
       this.getList()
+    },
+    handleDetail(row) {
+      this.dataForm = Object.assign({}, row)
+      this.dialogStatus = 'detail'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
