@@ -2,12 +2,8 @@ package com.ep.db.service;
 
 import com.ep.core.util.IdWorker;
 import com.ep.db.dao.HrSalaryMonthMapper;
-import com.ep.db.dao.HrmCompanyMapper;
-import com.ep.db.domain.Admin.Column;
 import com.ep.db.domain.HrSalaryMonth;
 import com.ep.db.domain.HrSalaryMonthExample;
-import com.ep.db.domain.HrmCompany;
-import com.ep.db.domain.HrmCompanyExample;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,10 +26,6 @@ public class SalaryMonthService {
             criteria.andCodeEqualTo(code);
         }
         criteria.andDeletedEqualTo(false);
-
-//        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-//            example.setOrderByClause(sort + " " + order);
-//        }
 
         PageHelper.startPage(page, limit);
         return hrSalaryMonthMapper.selectByExampleSelective(example);

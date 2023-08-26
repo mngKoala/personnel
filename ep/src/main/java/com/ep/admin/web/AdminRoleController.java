@@ -236,10 +236,10 @@ public class AdminRoleController {
         // 先删除旧的权限，再更新新的权限
         permissionService.deleteByRoleId(roleId);
         for (String permission : permissions) {
-            Permission litemallPermission = new Permission();
-            litemallPermission.setRoleId(roleId);
-            litemallPermission.setPermission(permission);
-            permissionService.add(litemallPermission);
+            Permission epPermission = new Permission();
+            epPermission.setRoleId(roleId);
+            epPermission.setPermission(permission);
+            permissionService.add(epPermission);
         }
         return ResponseUtil.ok();
     }

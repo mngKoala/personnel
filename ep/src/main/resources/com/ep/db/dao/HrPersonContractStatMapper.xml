@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ep.db.dao.HrPersonContractStatMapper">
+  <resultMap id="BaseResultMap" type="com.ep.db.domain.HrPersonContractStat">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <select id="getContractStat"  resultMap="BaseResultMap">
+    SELECT
+     case
+        when t.status = 'offline' then 'offline'
+        when t.status = 'online' then 'online'
+     end AS NAME,
+     COUNT(1) AS value
+    FROM hr_person_contract  t
+    WHERE t.deleted = '0'
+    GROUP BY  t.status
+    UNION
+    SELECT
+     'transfer_to_regular' AS NAME,
+     COUNT(1) AS value
+    FROM hr_person_contract  t
+    WHERE t.deleted = '0'
+    AND t.transfer_to_regular = 'n'
+    UNION
+    SELECT
+     'total' AS NAME,
+     COUNT(1) AS value
+    FROM hr_person_contract  t
+    WHERE t.deleted = '0'
+  </select>
+  <select id="getContractYear"  resultMap="BaseResultMap">
+    SELECT
+        t.contract_year AS name ,
+        COUNT(1) AS value
+    FROM
+    hr_person_contract t
+    WHERE t.deleted = 0
+    GROUP BY  t.contract_year
+  </select>
+</mapper>

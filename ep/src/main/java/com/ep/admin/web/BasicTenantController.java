@@ -5,9 +5,7 @@ import com.ep.admin.service.LogHelper;
 import com.ep.core.util.ResponseUtil;
 import com.ep.core.validator.Order;
 import com.ep.core.validator.Sort;
-import com.ep.db.domain.HrmCompany;
 import com.ep.db.domain.SysTenant;
-import com.ep.db.service.CompanyService;
 import com.ep.db.service.TenantService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,9 +21,6 @@ import java.util.List;
 @Validated
 public class BasicTenantController {
     private final Log logger = LogFactory.getLog(BasicTenantController.class);
-
-    @Autowired
-    private CompanyService companyService;
 
     @Autowired
     private TenantService tenantService;
@@ -49,10 +44,7 @@ public class BasicTenantController {
     @RequiresPermissionsDesc(menu = {"人力资源", "租户管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody SysTenant sysTenant) {
-        //String companyName = sysTenant.getName();
         tenantService.add(sysTenant);
-
-       // logHelper.logAuthSucceed("添加租户", companyName);
 
         return ResponseUtil.ok(sysTenant);
     }
@@ -61,12 +53,11 @@ public class BasicTenantController {
     @RequiresPermissionsDesc(menu = {"人力资源", "租户管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody SysTenant sysTenant) {
-        /**
-        if (tenantService.updateById(hrmCompany) == 0) {
+        if (tenantService.updateById(sysTenant) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
 
-        logHelper.logAuthSucceed("编辑租户", hrmCompany.getName());**/
+        logHelper.logAuthSucceed("编辑租户", sysTenant.getAlias());
         return ResponseUtil.ok(sysTenant);
     }
 

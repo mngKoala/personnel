@@ -95,9 +95,9 @@ public class PermissionService {
         permissionMapper.logicalDeleteByExample(example);
     }
 
-    public void add(Permission litemallPermission) {
-        litemallPermission.setAddTime(LocalDateTime.now());
-        litemallPermission.setUpdateTime(LocalDateTime.now());
-        permissionMapper.insertSelective(litemallPermission);
+    public void add(Permission epPermission) {
+        epPermission.setAddTime(LocalDateTime.now());
+        epPermission.setUpdateTime(LocalDateTime.now());
+        permissionMapper.insertSelective(epPermission);
     }
 }

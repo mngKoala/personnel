@@ -2,29 +2,19 @@ package com.ep.admin.web;
 
 import com.ep.admin.annotation.RequiresPermissionsDesc;
 import com.ep.admin.service.LogHelper;
-import com.ep.core.util.RegexUtil;
 import com.ep.core.util.ResponseUtil;
-import com.ep.core.util.bcrypt.BCryptPasswordEncoder;
 import com.ep.core.validator.Order;
 import com.ep.core.validator.Sort;
-import com.ep.db.domain.Admin;
 import com.ep.db.domain.HrmCompany;
-import com.ep.db.service.AdminService;
 import com.ep.db.service.CompanyService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
-
-import static com.ep.admin.util.AdminResponseCode.*;
 
 @RestController
 @RequestMapping("/admin/basic/company")

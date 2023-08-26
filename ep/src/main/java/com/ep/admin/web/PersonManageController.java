@@ -67,24 +67,24 @@ public class PersonManageController {
     @RequiresPermissionsDesc(menu = {"人员信息", "人员登记"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody Admin admin) {
-        Object error = validate(admin);
-        if (error != null) {
-            return error;
-        }
-
-        String username = admin.getUsername();
-        List<Admin> adminList = registerService.findAdmin(username);
-        if (adminList.size() > 0) {
-            return ResponseUtil.fail(ADMIN_NAME_EXIST, "管理员已经存在");
-        }
-
-        String rawPassword = admin.getPassword();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(rawPassword);
-        admin.setPassword(encodedPassword);
-        registerService.add(admin);
-        logHelper.logAuthSucceed("添加管理员", username);
-        return ResponseUtil.ok(admin);
+//        Object error = validate(admin);
+//        if (error != null) {
+//            return error;
+//        }
+//
+//        String username = admin.getUsername();
+//        List<Admin> adminList = registerService.findAdmin(username);
+//        if (adminList.size() > 0) {
+//            return ResponseUtil.fail(ADMIN_NAME_EXIST, "管理员已经存在");
+//        }
+//
+//        String rawPassword = admin.getPassword();
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String encodedPassword = encoder.encode(rawPassword);
+//        admin.setPassword(encodedPassword);
+//        registerService.add(admin);
+//        logHelper.logAuthSucceed("添加管理员", username);
+       return ResponseUtil.ok(admin);
     }
 
     @RequiresPermissions("person:register:read")
@@ -113,9 +113,9 @@ public class PersonManageController {
         // 不允许管理员通过编辑接口修改密码
         admin.setPassword(null);
 
-        if (registerService.updateById(admin) == 0) {
-            return ResponseUtil.updatedDataFailed();
-        }
+//        if (registerService.updateById(admin) == 0) {
+//            return ResponseUtil.updatedDataFailed();
+//        }
 
         logHelper.logAuthSucceed("编辑管理员", admin.getUsername());
         return ResponseUtil.ok(admin);
@@ -137,7 +137,7 @@ public class PersonManageController {
             return ResponseUtil.fail(ADMIN_DELETE_NOT_ALLOWED, "管理员不能删除自己账号");
         }
 
-        registerService.deleteById(anotherAdminId);
+      ///  registerService.deleteById(anotherAdminId);
         logHelper.logAuthSucceed("删除管理员", admin.getUsername());
         return ResponseUtil.ok();
     }

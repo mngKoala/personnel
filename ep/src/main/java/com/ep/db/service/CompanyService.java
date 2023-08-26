@@ -1,11 +1,7 @@
 package com.ep.db.service;
 
 import com.ep.core.util.IdWorker;
-import com.ep.db.dao.AdminMapper;
 import com.ep.db.dao.HrmCompanyMapper;
-import com.ep.db.domain.Admin;
-import com.ep.db.domain.Admin.Column;
-import com.ep.db.domain.AdminExample;
 import com.ep.db.domain.HrmCompany;
 import com.ep.db.domain.HrmCompanyExample;
 import com.github.pagehelper.PageHelper;
@@ -18,7 +14,6 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    private final Column[] result = new Column[]{Column.id, Column.username, Column.avatar, Column.roleIds};
 
     @Resource
     private HrmCompanyMapper hrmCompanyMapper;
@@ -32,10 +27,6 @@ public class CompanyService {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
-
-//        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-//            example.setOrderByClause(sort + " " + order);
-//        }
 
         PageHelper.startPage(page, limit);
         return hrmCompanyMapper.selectByExampleSelective(example);

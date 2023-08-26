@@ -6,8 +6,6 @@ import com.ep.core.util.ResponseUtil;
 import com.ep.core.validator.Order;
 import com.ep.core.validator.Sort;
 import com.ep.db.domain.HrSalaryTpl;
-import com.ep.db.domain.HrmCompany;
-import com.ep.db.service.CompanyService;
 import com.ep.db.service.SalaryTemplateService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

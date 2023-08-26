@@ -114,7 +114,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
          -->
-        <table tableName="hr_person_file">
+        <table tableName="sys_tenant">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

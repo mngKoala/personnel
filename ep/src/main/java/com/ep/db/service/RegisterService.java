@@ -1,12 +1,9 @@
 package com.ep.db.service;
 
-import com.ep.db.dao.AdminMapper;
+import com.ep.core.util.IdWorker;
 import com.ep.db.dao.HrPersonMapper;
-import com.ep.db.domain.Admin;
-import com.ep.db.domain.HrPerson.Column;
-import com.ep.db.domain.AdminExample;
-import com.ep.db.domain.HrPerson;
-import com.ep.db.domain.HrPersonExample;
+import com.ep.db.dao.HrmEmployeeMapper;
+import com.ep.db.domain.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,64 +14,55 @@ import java.util.List;
 
 @Service
 public class RegisterService {
-    private final Column[] result = new Column[]{Column.id, Column.name};
-
-    @Resource
-    private AdminMapper adminMapper;
-
     @Resource
     private HrPersonMapper  hrPersonMapper;
 
-    public List<Admin> findAdmin(String username) {
-        AdminExample example = new AdminExample();
-        example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
-        return adminMapper.selectByExample(example);
+    @Resource
+    private HrmEmployeeMapper hrmEmployeeMapper;
+
+    public List<HrmEmployee> querySelectiveEmployee(String username, Integer page, Integer limit, String sort, String order) {
+        HrmEmployeeExample example = new HrmEmployeeExample();
+        HrmEmployeeExample.Criteria criteria = example.createCriteria();
+        criteria.andDeletedEqualTo(false);
+
+        PageHelper.startPage(page, limit);
+        return hrmEmployeeMapper.selectByExampleSelective(example);
     }
 
-    public Admin findAdmin(Integer id) {
-        return adminMapper.selectByPrimaryKey(id);
-    }
-
-    public List<HrPerson> querySelective(String username, Integer page, Integer limit, String sort, String order) {
+    public List<HrPerson> querySelective(String name, Integer page, Integer limit, String sort, String order) {
         HrPersonExample example = new HrPersonExample();
         HrPersonExample.Criteria criteria = example.createCriteria();
 
-        if (!StringUtils.isEmpty(username)) {
-            //criteria.andUsernameLike("%" + username + "%");
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
-
-//        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-//            example.setOrderByClause(sort + " " + order);
-//        }
 
         PageHelper.startPage(page, limit);
         return hrPersonMapper.selectByExampleSelective(example);
     }
 
-    public int updateById(Admin admin) {
-        admin.setUpdateTime(LocalDateTime.now());
-        return adminMapper.updateByPrimaryKeySelective(admin);
+    public int updateById(HrPerson hrPerson) {
+        hrPerson.setUpdateTime(LocalDateTime.now());
+        return hrPersonMapper.updateByPrimaryKeySelective(hrPerson);
     }
 
-    public void deleteById(Integer id) {
-        adminMapper.logicalDeleteByPrimaryKey(id);
+    public void deleteById(String id) {
+        hrPersonMapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public void add(Admin admin) {
-        admin.setAddTime(LocalDateTime.now());
-        admin.setUpdateTime(LocalDateTime.now());
-        adminMapper.insertSelective(admin);
+    public void add(HrPerson hrPerson) {
+        if (hrPerson.getId() == null) {
+            hrPerson.setId(String.valueOf(IdWorker.getId()));
+        }
+
+        hrPerson.setCreateTime(LocalDateTime.now());
+        hrPerson.setUpdateTime(LocalDateTime.now());
+
+        hrPersonMapper.insertSelective(hrPerson);
     }
 
-    /**
-    public Admin findById(Integer id) {
-        return adminMapper.selectByPrimaryKeySelective(id, result);
-    }**/
-
-    public List<Admin> all() {
-        AdminExample example = new AdminExample();
-        example.or().andDeletedEqualTo(false);
-        return adminMapper.selectByExample(example);
+    public HrPerson findById(String id) {
+        return hrPersonMapper.selectByPrimaryKey(id);
     }
 }

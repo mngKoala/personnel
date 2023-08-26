@@ -6,8 +6,6 @@ import com.ep.core.util.ResponseUtil;
 import com.ep.core.validator.Order;
 import com.ep.core.validator.Sort;
 import com.ep.db.domain.HrRecruitPostRec;
-import com.ep.db.domain.HrmCompany;
-import com.ep.db.service.CompanyService;
 import com.ep.db.service.RecruitPostRecService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,12 +31,12 @@ public class RecruitPostRecController {
     @RequiresPermissions("post:rec:list")
     @RequiresPermissionsDesc(menu = {"招聘管理", "招聘岗位"}, button = "查询")
     @GetMapping("/list")
-    public Object list(String name,
+    public Object list(String postName,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        List<HrRecruitPostRec> companyList = recruitPostRecService.querySelective(name, page, limit, sort, order);
+        List<HrRecruitPostRec> companyList = recruitPostRecService.querySelective(postName, page, limit, sort, order);
         return ResponseUtil.okList(companyList);
     }
 
@@ -46,10 +44,10 @@ public class RecruitPostRecController {
     @RequiresPermissionsDesc(menu = {"招聘管理", "招聘岗位"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody HrRecruitPostRec hrRecruitPostRec) {
-        String companyName = hrRecruitPostRec.getName();
+        String postName = hrRecruitPostRec.getPostName();
         recruitPostRecService.add(hrRecruitPostRec);
 
-        logHelper.logAuthSucceed("添加招聘岗位", companyName);
+        logHelper.logAuthSucceed("添加招聘岗位", postName);
 
         return ResponseUtil.ok(hrRecruitPostRec);
     }
@@ -62,7 +60,7 @@ public class RecruitPostRecController {
             return ResponseUtil.updatedDataFailed();
         }
 
-        logHelper.logAuthSucceed("编辑招聘岗位", hrRecruitPostRec.getName());
+        logHelper.logAuthSucceed("编辑招聘岗位", hrRecruitPostRec.getPostName());
         return ResponseUtil.ok(hrRecruitPostRec);
     }
 
@@ -73,7 +71,7 @@ public class RecruitPostRecController {
         String id =  hrRecruitPostRec.getId();
         recruitPostRecService.deleteById(id);
 
-        logHelper.logAuthSucceed("删除招聘岗位", hrRecruitPostRec.getName());
+        logHelper.logAuthSucceed("删除招聘岗位", hrRecruitPostRec.getPostName());
         return ResponseUtil.ok();
     }
 }

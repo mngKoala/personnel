@@ -1,11 +1,8 @@
 package com.ep.db.service;
 
 import com.ep.core.util.IdWorker;
-import com.ep.db.dao.AdminMapper;
 import com.ep.db.dao.HrmOrganizationMapper;
-import com.ep.db.dao.HrmPositionMapper;
 import com.ep.db.domain.*;
-import com.ep.db.domain.HrPerson.Column;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,13 +13,8 @@ import java.util.List;
 
 @Service
 public class OrgService {
-    ///private final Column[] result = new Column[]{Column.id, Column.name};
-
     @Resource
     private HrmOrganizationMapper  hrmOrganizationMapper;
-
-    @Resource
-    private HrmPositionMapper hrmPositionMapper;
 
     public List<HrmOrganization> findOrg() {
 

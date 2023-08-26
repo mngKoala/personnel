@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * 下面三个Autowired注解需要配合Lazy注解使用，否则会导致这三个service相关的事务失效。
- * https://gitee.com/linlinjava/litemall/issues/I3I94X#note_4809495
+ * https://gitee.com/linlinjava/ep/issues/I3I94X#note_4809495
  */
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 

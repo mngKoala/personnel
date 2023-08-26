@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ep.db.dao.HrPersonStatMapper">
+  <resultMap id="BaseResultMap" type="com.ep.db.domain.HrPersonStat">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <select id="getEmployeeStat"  resultMap="BaseResultMap">
+    SELECT
+        case
+            when t.employee_status = 'non_employee' then 'non_employee'
+            when t.employee_status = 'offline' then 'offline'
+            when t.employee_status = 'online' then 'online'
+            when t.employee_status = '' or t.employee_status = null then 'other'
+        end AS NAME,
+        COUNT(1) AS value
+    FROM hr_person  t
+    WHERE t.deleted = '0'
+    GROUP BY  t.employee_status
+    UNION
+    SELECT
+     'ontrial' AS NAME,
+     COUNT(1) AS value
+    FROM hr_person  t
+    WHERE t.deleted = '0'
+    AND t.employee_identity_status = 'ontrial'
+    UNION
+    SELECT
+     'total' AS NAME,
+     COUNT(1) AS value
+    FROM hr_person  t
+    WHERE t.deleted = '0'
+  </select>
+  <select id="getEmployeeStatus"  resultMap="BaseResultMap">
+      SELECT
+         case
+              when t.employee_status= 'non_employee' then '非员工'
+              when t.employee_status= 'offline' then '离职'
+              when t.employee_status= 'online' then '在职'
+              when t.employee_status IS null then '其它'
+          end AS name,
+          COUNT(1) AS value
+      FROM hr_person  t
+      WHERE t.deleted = 0
+      GROUP BY t.employee_status
+  </select>
+  <select id="getEmployeeEducation"  resultMap="BaseResultMap">
+    SELECT
+        case
+            when t.education_code = 'high' then '高中'
+            when t.education_code = 'junior_college' then '大专'
+            when t.education_code = 'middle' then '初中'
+            when t.education_code = 'postgraduate' then '研究生'
+            when t.education_code = 'primary' then '小学'
+            when t.education_code = 'undergraduate' then '本科'
+            when t.education_code = '' then '其它'
+        end  as name ,
+        COUNT(1) as value
+    FROM  hr_person t
+    WHERE t.deleted = 0
+    GROUP BY t.education_code
+  </select>
+</mapper>
